@@ -34,7 +34,6 @@ end
 
 
 def update_order_count
-  byebug
   @product = Product.find(params[:product_id])
   new_order_count = params[:order_count].to_i
   session[:cart][@product.id] = new_order_count
