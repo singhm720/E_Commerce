@@ -1,0 +1,11 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Email Verification</title>
+</head>
+<body>
+  <h1>Email Verification</h1>
+  <p>Click the link below to verify your email address:</p>
+  <p><%= link_to 'Verify Email', verify_email_url(@user.verification_token) %></p>
+</body>
+</html>

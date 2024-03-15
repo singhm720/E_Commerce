@@ -1,0 +1,41 @@
+<div class="container">
+    <div class="row row-cols-1 row-cols-md-3 g-4">
+        <!-- First set of content -->
+        <div class="col">
+            <div class="card">
+                <div id="img-container" style="width: 400px;">
+                    <% if @product.image.present? %> <%= image_tag @product.image, class: 'card-img-top', alt: '...' %> <% end %>
+                </div>
+                <div class="card-body">
+                    <p class="card-text"><%= @product.title_name %></p>
+                    <p class="card-text"><%= @product.title_description %></p>
+                    <h5 class="card-text">₹<%= @product.title_price %></h5>
+                </div>
+            </div>
+        </div>
+
+        <!-- Second set of content -->
+        <div class="col">
+            <div class="card"></div>
+        </div>
+
+        <!-- Third set of content -->
+        <div class="col d-flex justify-content-center align-items-center">
+            <div class="card img-container">
+                <h5>Scan QR Code To Make Payment</h5>
+                <!-- Display the QR code -->
+                <%= @qr_code_url.html_safe %>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        var options = {
+            fillContainer: true,
+            offset: { vertical: 0, horizontal: 10 }
+        };
+        new ImageZoom(document.getElementById("img-container"), options);
+    });
+</script>

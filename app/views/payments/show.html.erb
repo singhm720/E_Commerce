@@ -1,0 +1,16 @@
+<!-- app/views/payments/show.html.erb -->
+
+<div class="container">
+  <div class="row justify-content-center">
+    <div class="col-md-6">
+      <!-- Display the payment details -->
+      <p>Payment details: <%= @payment_details %></p>
+      
+      <!-- Display the QR code -->
+      <h1>Scan QR code to make Payment</h1>
+      <% if @qr_code.present? %>
+        <%= render qrcode: @qr_code.as_svg.html_safe, level: :h, size: 200 %>
+      <% end %>
+    </div>
+  </div>
+</div>

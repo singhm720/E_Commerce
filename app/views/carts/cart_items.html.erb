@@ -1,0 +1,95 @@
+<div class="container">
+  <div class="row">
+    <div class="col-lg-8">
+      <div class="row row-cols-1 row-cols-md-3 g-4">
+        <% if session[:cart].present? %>
+          <% session[:cart].each do |product_id| %>
+            <% product = @products.find_by(id: product_id) %>
+            <% if product %>
+              <div class="col">
+                <div class="card">
+                  <% if product.image.present? %>
+                    <%= image_tag product.image, class: 'card-img-top', alt: '...' %>
+                  <% end %>
+                  <div class="card-body">
+                    <p class="card-text"><%= product.title_name %></p>
+                    <p class="card-text"><%= product.title_description %></p>
+                    <h5 class="card-text">₹<%= product.title_price %></h5>
+                    <div class='row'>
+                      <div class='col'>
+                        <%= form_tag(cart_item_path(product_id), method: :delete, class: 'delete-form') do %>
+                          <%= button_tag type: 'submit', class: 'btn btn-danger' do %>
+                            <%= image_tag("trash.svg", alt: "Delete Icon") %>
+                            <%= hidden_field_tag :product_id, product_id %>
+                          <% end %>
+                        <% end %>
+                      </div>
+                      <div class='col'>
+                        <%= form_tag(update_order_count_cart_item_path(product), method: :post, class: 'increase-form') do %>
+                          <div class="d-flex align-items-center">
+                            <%= select_tag "order_count_#{product.id}", options_for_select((1..10).to_a), class: 'form-control', style:'width: 50px' %>
+                            <%= button_tag "#{product.title_price}", type: 'submit', class: 'btn btn-primary', data: { price: product.title_price } %>
+                          </div>
+                        <% end %>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            <% else %>
+              <h1>Please add a product to the cart</h1>
+            <% end %>
+          <% end %>
+        <% else %>
+          <h1>Your cart is empty</h1>
+        <% end %>
+      </div>
+    </div>
+    <div class="col-lg-4">
+      <div>
+        <h1>Payment Details</h1>
+        <p>Subtotal: ₹<%= @subtotal %> </p>
+        <!-- Add payment details content here -->
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    const forms = document.querySelectorAll('.increase-form');
+
+    forms.forEach(form => {
+      const select = form.querySelector('select');
+      const button = form.querySelector('button');
+
+      select.addEventListener('change', function() {
+        const selectedCount = parseInt(select.value);
+        const productPrice = parseFloat(button.dataset.price);
+        const updatedPrice = selectedCount * productPrice;
+        button.textContent = `₹${updatedPrice.toFixed(2)}`;
+
+        // Update total price in the cart
+        const totalPriceElement = document.getElementById('total-price');
+        const previousTotal = parseFloat(totalPriceElement.textContent.replace('₹', ''));
+        const totalPrice = previousTotal - (parseFloat(button.dataset.previousPrice) || 0) + updatedPrice;
+        totalPriceElement.textContent = `₹${totalPrice.toFixed(2)}`;
+
+        // Make an AJAX request to the controller to update order count
+        const productId = select.dataset.productId;
+        const url = `/cart_items/${productId}/update_order_count`;
+        const data = { order_count: selectedCount };
+        fetch(url, {
+          method: 'PATCH',
+          headers: {
+            'Content-Type': 'application/json',
+            'X-CSRF-Token': '<%= form_authenticity_token %>' // Include CSRF token
+          },
+          body: JSON.stringify(data)
+        });
+      });
+    });
+  });
+</script>
+

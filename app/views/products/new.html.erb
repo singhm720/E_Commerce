@@ -1,0 +1,46 @@
+<div class="col-lg-6 mx-auto">
+  <div class="card">
+    <div class="card-header bg-primary text-white">
+      <h2 class="text-center">Add New Product</h2>
+    </div>
+    <div class="card-body">
+      <%= form_for(@product, html: { multipart: true }) do |p| %>
+        <div class="form-group">
+          <label for="product_image">Upload Image</label>
+          <%= p.file_field :image, id: 'product_image', class: 'form-control-file' %>
+          <% if @product.errors.has_key?(:image) %>
+            <p class="error"><%= @product.errors[:image].first %></p>
+          <% end %>
+        </div>
+        
+        <div class="form-group">
+          <label for="product_title">Name</label>
+          <%= p.text_field :title_name, id: 'product_name', class: 'form-control' %>
+          <% if @product.errors.has_key?(:title_name) %>
+            <p class="error"><%= @product.errors[:title_name].first %></p>
+          <% end %>
+        </div>
+        
+        <div class="form-group">
+          <label for="product_description">Description</label>
+          <%= p.text_area :title_description, id: 'product_description', class: 'form-control' %>
+          <% if @product.errors.has_key?(:title_description) %>
+            <p class="error"><%= @product.errors[:title_description].first %></p>
+          <% end %>
+        </div>
+
+        <div class="form-group">
+          <label for="product_price">Price</label>
+          <%= p.text_field :title_price, id: 'product_price', class: 'form-control' %>
+          <% if @product.errors.has_key?(:title_price) %>
+            <p class="error"><%= @product.errors[:title_price].first %></p>
+          <% end %>
+        </div>
+        
+        <div class="form-group mt-4">
+          <%= p.submit params[:action] == 'edit' ? 'Update Product' : 'Create Product', class: 'btn btn-primary' %>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</div>
