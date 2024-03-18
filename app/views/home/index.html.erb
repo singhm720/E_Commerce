@@ -1,19 +1,29 @@
 <div class="container">
   <div class="row row-cols-1 row-cols-md-3 g-4">
-    <% @products.each do |product| %>
+    <% if @products.present? %>
+      <% @products.each do |product| %>
+        <div class="col">
+          <div class="card">
+            <% if product.image.present? %>
+              <%= image_tag product.image, class: 'card-img-top', alt: '...' %>
+            <% end %>
+            <div class="card-body">
+              <%= link_to product.title_name, product_path(product), class: 'card-title' %>
+              <p class="card-text"><%= product.title_description %></p>
+              <h5 class="card-text">₹<%= product.title_price %></h5>
+              <div class="d-grid gap-2">
+                <%= link_to 'Add to Cart', add_to_cart_path(product_id: product.id), remote: true, method: :post, class: 'btn btn-primary' %>
+                <%= link_to 'Buy Now', buy_now_path(product_id: product.id), class: 'btn btn-success' %>
+              </div>
+            </div>
+          </div>
+        </div>
+      <% end %>
+    <% else %>
       <div class="col">
         <div class="card">
-          <% if product.image.present? %>
-            <%= image_tag product.image, class: 'card-img-top', alt: '...' %>
-          <% end %>
           <div class="card-body">
-            <%= link_to product.title_name, product_path(product), class: 'card-title' %>
-            <p class="card-text"><%= product.title_description %></p>
-            <h5 class="card-text">₹<%= product.title_price %></h5>
-            <div class="d-grid gap-2">
-            <%= link_to 'Add to Cart', add_to_cart_path(product_id: product.id), remote: true, method: :post, class: 'btn btn-primary' %>
-            <%= link_to 'Buy Now', buy_now_path(product_id: product.id), class: 'btn btn-success' %>
-            </div>
+            <p>No products found.</p>
           </div>
         </div>
       </div>

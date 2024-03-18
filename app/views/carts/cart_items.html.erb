@@ -27,8 +27,10 @@
                       <div class='col'>
                         <%= form_tag(update_order_count_cart_item_path(product), method: :post, class: 'increase-form') do %>
                           <div class="d-flex align-items-center">
-                            <%= select_tag "order_count_#{product.id}", options_for_select((1..10).to_a), class: 'form-control', style:'width: 50px' %>
-                            <%= button_tag "#{product.title_price}", type: 'submit', class: 'btn btn-primary', data: { price: product.title_price } %>
+                          <%= select_tag "order_count_#{product.id}", options_for_select((1..10).to_a), class: 'form-control', style: 'width: 50px', data: { productId: product.id } %>
+                          <%= button_tag "#{product.title_price}", id: 'total-price', type: 'submit', class: 'btn btn-primary', data: { price: product.title_price, productId: product.id } do %>
+                            <%= product.title_price %>
+                          <% end %>                
                           </div>
                         <% end %>
                       </div>
@@ -57,39 +59,37 @@
 
 
 <script>
-  document.addEventListener('DOMContentLoaded', function() {
-    const forms = document.querySelectorAll('.increase-form');
+$(document).ready(function() {
+  const forms = document.querySelectorAll('.increase-form');
 
-    forms.forEach(form => {
-      const select = form.querySelector('select');
-      const button = form.querySelector('button');
+  forms.forEach(form => {
+    const select = form.querySelector('select');
+    const button = form.querySelector('button');
 
-      select.addEventListener('change', function() {
-        const selectedCount = parseInt(select.value);
-        const productPrice = parseFloat(button.dataset.price);
-        const updatedPrice = selectedCount * productPrice;
-        button.textContent = `₹${updatedPrice.toFixed(2)}`;
+    select.addEventListener('change', function() {
+      const selectedCount = parseInt(select.value);
+      const productPrice = parseFloat(button.dataset.price);
+      const updatedPrice = selectedCount * productPrice;
+      button.textContent = `₹${updatedPrice.toFixed(2)}`;
+      
+      debugger;
+      // Make an AJAX request to the controller to update order count
+      const productId = select.getAttribute('data-productId');
 
-        // Update total price in the cart
-        const totalPriceElement = document.getElementById('total-price');
-        const previousTotal = parseFloat(totalPriceElement.textContent.replace('₹', ''));
-        const totalPrice = previousTotal - (parseFloat(button.dataset.previousPrice) || 0) + updatedPrice;
-        totalPriceElement.textContent = `₹${totalPrice.toFixed(2)}`;
-
-        // Make an AJAX request to the controller to update order count
-        const productId = select.dataset.productId;
-        const url = `/cart_items/${productId}/update_order_count`;
-        const data = { order_count: selectedCount };
-        fetch(url, {
-          method: 'PATCH',
-          headers: {
-            'Content-Type': 'application/json',
-            'X-CSRF-Token': '<%= form_authenticity_token %>' // Include CSRF token
-          },
-          body: JSON.stringify(data)
-        });
+      const url = `/cart_items/${productId}/update_order_count`;
+      const data = { product_id: productId, order_count: selectedCount};
+      fetch(url, {
+        method: 'PATCH',
+        headers: {
+          'Content-Type': 'application/json',
+          'X-CSRF-Token': '<%= form_authenticity_token %>' // Include CSRF token
+        },
+        body: JSON.stringify(data)
       });
     });
   });
+});
+
+
 </script>
 

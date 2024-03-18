@@ -20,39 +20,37 @@ class CartsController < ApplicationController
   end
 
   
-def cart_items
-  if session[:cart].present?
-    @products = Product.where(id: session[:cart])
-    @cart_items = session[:cart].map { |product_id| @products.find(product_id) }
-    @subtotal = @cart_items.sum(&:title_price)
-  else
-    @products = []
-    @cart_items = []
-    @subtotal = 0
+  def cart_items
+    if session[:cart].present?
+      @products = Product.where(id: session[:cart])
+      @cart_items = @products.map { |product| { product: product, order_count: session[:cart].count(product.id) } }
+      @subtotal = @cart_items.sum { |item| item[:product].title_price * item[:order_count] }
+    else
+      @products = []
+      @cart_items = []
+      @subtotal = 0
+    end
   end
-end
 
-
-def update_order_count
-  @product = Product.find(params[:product_id])
-  new_order_count = params[:order_count].to_i
-  session[:cart][@product.id] = new_order_count
-
-  @products = Product.where(id: session[:cart])
-  @cart_items = session[:cart].map { |product_id| @products.find(product_id) }
   
-  # Calculate the subtotal
-  @subtotal = 0
-  @cart_items.each do |item|
-    subtotal += item.title_price * session[:cart][item.id]
-  end
-  # @products = Product.where(id: session[:cart])
-  # @cart_items = session[:cart].map { |product_id| @products.find(product_id) }
-  # @subtotal = @cart_items.sum { |item| item.title_price * session[:cart][item.id] }
+  
+  
 
-  redirect_to cart_items_path
-  head :no_content
-end
+  def update_order_count
+    @product = Product.find(params[:product_id])
+    new_order_count = params[:order_count].to_i
+    session[:cart_count] += new_order_count - session[:cart].count(@product.id)
+    session[:cart] = session[:cart].reject { |id| id == @product.id } + [@product.id] * new_order_count
+  
+    @products = Product.where(id: session[:cart])
+    @cart_items = @products.map { |product| { product: product, order_count: session[:cart].count(product.id) } }
+    @subtotal = @cart_items.sum { |item| item[:product].title_price * item[:order_count] }
+  
+    respond_to do |format|
+      format.js # This will render update_order_count.js.erb
+    end
+  end
+  
 
 def buy_now
     @product = Product.find(params[:product_id])
