@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_03_13_080753) do
+ActiveRecord::Schema[7.1].define(version: 2024_03_19_134116) do
   create_table "active_storage_attachments", force: :cascade do |t|
     t.string "name", null: false
     t.string "record_type", null: false
@@ -60,6 +60,18 @@ ActiveRecord::Schema[7.1].define(version: 2024_03_13_080753) do
     t.string "image"
   end
 
+  create_table "purchase_records", force: :cascade do |t|
+    t.string "user_email"
+    t.string "user_name"
+    t.integer "product_id"
+    t.string "product_name"
+    t.decimal "product_price"
+    t.decimal "total_cart_price"
+    t.string "transaction_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "users", force: :cascade do |t|
     t.string "email", default: "", null: false
     t.string "encrypted_password", default: "", null: false
@@ -69,6 +81,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_03_13_080753) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "mobile_number"
+    t.string "name"
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
