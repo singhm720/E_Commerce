@@ -33,7 +33,6 @@
   .nav-item img {
     max-width: 30px; /* Set maximum width for the cart icon */
   }
-  
   </style>
   </head>
 <body>
@@ -48,6 +47,7 @@
   </button>
   <div class="collapse navbar-collapse" id="navbarNav">
     <ul class="navbar-nav ml-auto">
+    <% if user_signed_in? %>
       <li class="nav-item">
         <a class="nav-link btn btn-outline-primary" href="#">Watch List</a>
       </li>
@@ -63,7 +63,6 @@
         </div>
       <% end %>              
     </li>
-      <% if user_signed_in? %>
       
       <li class="nav-item">
         <%= link_to cart_items_path, class: 'nav-link btn btn-outline-primary' do %>
