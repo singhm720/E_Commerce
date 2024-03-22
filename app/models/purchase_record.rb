@@ -1,4 +1,7 @@
 class PurchaseRecord < ApplicationRecord
+    belongs_to :user
+    belongs_to :product
+
     validates :user_email, presence: true, format: { with: URI::MailTo::EMAIL_REGEXP }
     validates :user_name, presence: true
     validates :product_id, presence: true

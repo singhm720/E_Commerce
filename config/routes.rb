@@ -4,7 +4,7 @@ Rails.application.routes.draw do
   root 'home#index'
   get 'payments/show'
   resources :products
-  resources :purchase_records, only: [:new, :create]
+  resources :purchase_records
   devise_for :users, controllers: {
     registrations: 'users/registrations',
     sessions: 'users/sessions',
@@ -12,6 +12,7 @@ Rails.application.routes.draw do
     confirmations: 'users/confirmations',
     unlocks: 'users/unlocks'
   }
+  get '/show_orders', to: 'purchase_records#show_orders', as: 'show_orders_purchase_records'
   get '/carts/:product_id/add_to_cart', to: 'carts#add_to_cart', as: 'add_to_cart'
   get '/carts/:product_id/buy_now/', to: 'carts#buy_now', as: 'buy_now'
   get '/cart_items', to: 'carts#cart_items', as: 'cart_items'

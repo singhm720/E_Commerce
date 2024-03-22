@@ -1,38 +1,42 @@
 <div class="container">
-    <div class="row row-cols-1 row-cols-md-3 g-4">
-      <!-- First set of content -->
-      <div class="col">
-        <div class="card">
-          <div id="img-container" style="width: 400px;">
+  <div class="row">
+    <div class="col-lg-8">
+      <div class="row row-cols-1 row-cols-md-3 g-4">
+        <div class="col">
+          <div class="card">
             <% if @product.image.present? %>
               <%= image_tag @product.image, class: 'card-img-top', alt: '...' %>
             <% end %>
-          </div>
-          <div class="card-body">
-            <p class="card-text"><%= @product.title_name %></p>
-            <p class="card-text"><%= @product.title_description %></p>
-            <h5 class="card-text">₹<%= @product.title_price %></h5>
+            <div class="card-body">
+              <p class="card-text"><%= @product.title_name %> </p>
+              <p class="card-text"><%= @product.title_description %> </p>
+              <h5 class="card-text">₹<%= @product.title_price %> </h5>
+            </div>
           </div>
         </div>
       </div>
-
-      <!-- Second set of content -->
-      <div class="col">
-        <div class="card"></div>
-      </div>
-
-      <!-- Third set of content -->
-      <div class="col d-flex justify-content-center align-items-center">
-        <div class="card img-container">
-          <h5>Scan QR Code To Make Payment</h5>
-          <!-- Display the QR code -->
-          <%= @qr_code_url.html_safe %>
+    </div>
+    <div class="col-lg-4">
+      <div>
+        <h1>Payment Details</h1>
+        <p>Subtotal: ₹<%= @subtotal %></p>
+        <%= @qr_code_url.html_safe %>
+        <div class="form-group">
+          <%= form_with(model: @purchase_record, url: purchase_records_path(product_id: @product.id), method: :post, local: true, id: "purchase_record_form") do |form| %>
+            <div class="field">
+              <%= form.label :transaction_id, class: "form-label"%> ID:-  
+              <%= form.text_field :transaction_id, class: 'form-control', id: "purchase_record_transaction_id" %>
+            </div>
+            <!-- Add other fields as needed -->
+            <div class="actions text-center">
+              <%= form.submit "Purchase Now", class: "btn btn-primary" %>
+            </div>
+          <% end %>  
         </div>
       </div>
     </div>
   </div>
-
-<!--
+</div>
 <script>
     document.addEventListener("DOMContentLoaded", function() {
         var options = {
@@ -51,4 +55,3 @@
         });
     });
 </script>
--->
