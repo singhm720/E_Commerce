@@ -1,103 +1,72 @@
 <div class="container">
   <div class="row">
     <div class="col-lg-8">
-      <div class="row row-cols-1 row-cols-md-3 g-4">
-        <% if session[:cart].present? %>
-          <% session[:cart].each do |product_id| %>
-            <% product = @products.find_by(id: product_id) %>
-            <% if product %>
-              <div class="col">
-                <div class="card">
-                  <% if product.image.present? %>
-                    <%= image_tag product.image, class: 'card-img-top', alt: '...' %>
-                  <% end %>
-                  <div class="card-body">
-                    <p class="card-text"><%= product.title_name %></p>
-                    <p class="card-text"><%= product.title_description %></p>
-                    <h5 class="card-text">₹<%= product.title_price %></h5>
-                    <div class='row'>
-                      <div class='col'>
-                        <%= form_tag(cart_item_path(product_id), method: :delete, class: 'delete-form') do %>
-                          <%= button_tag type: 'submit', class: 'btn btn-danger' do %>
-                            <%= image_tag("trash.svg", alt: "Delete Icon") %>
-                            <%= hidden_field_tag :product_id, product_id %>
-                          <% end %>
-                        <% end %>
-                      </div>
-                      <div class='col'>
-                        <%= form_tag(update_order_count_cart_item_path(product), method: :post, class: 'increase-form') do %>
-                          <div class="d-flex align-items-center">
-                            <%= select_tag "order_count_#{product.id}", options_for_select((1..10).to_a.map { |count| [count, count] }, session[:cart].count(product.id)), class: 'form-control', style: 'width: 50px', data: { productId: product.id } %>
-                            <%= button_tag "#{product.title_price}", id: 'total-price', type: 'submit', class: 'btn btn-primary', data: { price: product.title_price, productId: product.id } do %>
-                              <%= product.title_price %>
-                            <% end %>
-                          </div>
-                        <% end %>
-                      </div>
-                    </div>
-                  </div>
-                </div>
+      <div class="row row-cols-1 row-cols-md-3 g-4"><% if session[:cart].present? %><% session[:cart].each do |product_id| %><% product = @products.find_by(id: product_id) %><% if product %> <div class="col">
+          <div class="card"><% if product.image.present? %><%= image_tag product.image, class: 'card-img-top', alt: '...' %><% end %> <div class="card-body">
+              <p class="card-text"><%= product.title_name %> </p>
+              <p class="card-text"><%= product.title_description %> </p>
+              <h5 class="card-text">₹<%= product.title_price %> </h5>
+              <div class='row'>
+                <div class='col'><%= form_tag(cart_item_path(product_id), method: :delete, class: 'delete-form') do %><%= button_tag type: 'submit', class: 'btn btn-danger' do %><%= image_tag("trash.svg", alt: "Delete Icon") %><%= hidden_field_tag :product_id, product_id %><% end %><% end %> </div>
+                <div class='col'><%= form_tag(update_order_count_cart_item_path(product), method: :post, class: 'increase-form') do %> <div class="d-flex align-items-center"><%= select_tag "order_count_#{product.id}", options_for_select((1..10).to_a.map { |count| [count, count] }, session[:cart].count(product.id)), class: 'form-control', style: 'width: 50px', data: { productId: product.id } %><%= button_tag "#{product.title_price}", id: 'total-price', type: 'submit', class: 'btn btn-primary', data: { price: product.title_price, productId: product.id } do %><%= product.title_price %><% end %> </div><% end %> </div>
               </div>
-            <% else %>
-              <h1>Please add a product to the cart</h1>
-            <% end %>
-          <% end %>
-        <% else %>
-          <h1>Your cart is empty</h1>
-        <% end %>
-      </div>
+            </div>
+          </div>
+        </div><% else %> <h1>Please add a product to the cart</h1><% end %><% end %> </div>
     </div>
     <div class="col-lg-4">
-    <div>
-      <h1>Payment Details</h1>
-      <p>Subtotal: ₹<%= @subtotal %></p>
-      <%= @qr_code_url.html_safe %>
-      <%= form_tag(purchase_records_path, method: :post) do %>
+      <div>
+        <h1>Payment Details</h1>
+        <p>Subtotal: ₹<%= @subtotal %>
+          </p><%= @qr_code_url.html_safe %>
         <div class="form-group">
-          <%= label_tag :transaction_id, "Enter Transaction ID" %>
-          <%= text_field_tag :transaction_id, nil, class: "form-control", placeholder: "Enter Transaction ID" %>
-        </div>
-        <%= submit_tag "Purchase Now", class: "btn btn-primary" %>
-      <% end %>
+          <%= form_with(model: @purchase_record, url: purchase_records_path, local: true) do |form| %>
+            <div class="field">
+              <%= form.label :transaction_id%> ID:-
+              <%= form.text_field :transaction_id, class: 'form-control'%>
+            </div>
+            <!-- Add other fields as needed -->
+            <div class="actions">
+              <%= form.submit "Purchase Now" %>
+            </div>
+          <% end %>  
+        </div>        
+      </div>
     </div>
-  </div>
-  
+    <% else %>
+      <h1>Your cart is empty</h1>
+    <% end %>
   </div>
 </div>
 
-
 <script>
-$(document).ready(function() {
-  const forms = document.querySelectorAll('.increase-form');
-
-  forms.forEach(form => {
-    const select = form.querySelector('select');
-    const button = form.querySelector('button');
-
-    select.addEventListener('change', function() {
-      const selectedCount = parseInt(select.value);
-      const productPrice = parseFloat(button.dataset.price);
-      const updatedPrice = selectedCount * productPrice;
-      button.textContent = `₹${updatedPrice.toFixed(2)}`;
-      
-      debugger;
-      // Make an AJAX request to the controller to update order count
-      const productId = select.getAttribute('data-productId');
-
-      const url = `/cart_items/${productId}/update_order_count`;
-      const data = { product_id: productId, order_count: selectedCount};
-      fetch(url, {
-        method: 'PATCH',
-        headers: {
-          'Content-Type': 'application/json',
-          'X-CSRF-Token': '<%= form_authenticity_token %>' // Include CSRF token
-        },
-        body: JSON.stringify(data)
+  $(document).ready(function() {
+    const forms = document.querySelectorAll('.increase-form');
+    forms.forEach(form => {
+      const select = form.querySelector('select');
+      const button = form.querySelector('button');
+      select.addEventListener('change', function() {
+        const selectedCount = parseInt(select.value);
+        const productPrice = parseFloat(button.dataset.price);
+        const updatedPrice = selectedCount * productPrice;
+        button.textContent = `₹${updatedPrice.toFixed(2)}`;
+        debugger;
+        // Make an AJAX request to the controller to update order count
+        const productId = select.getAttribute('data-productId');
+        const url = `/cart_items/${productId}/update_order_count`;
+        const data = {
+          product_id: productId,
+          order_count: selectedCount
+        };
+        fetch(url, {
+          method: 'PATCH',
+          headers: {
+            'Content-Type': 'application/json',
+            'X-CSRF-Token': '<%= form_authenticity_token %>' // Include CSRF token
+          },
+          body: JSON.stringify(data)
+        });
       });
     });
   });
-});
-
-
 </script>
-
