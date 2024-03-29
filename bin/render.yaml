@@ -1,0 +1,23 @@
+databases:
+  - name: mysite
+    databaseName: mysite
+    user: mysite
+    plan: free
+
+services:
+  - type: web
+    name: mysite
+    runtime: ruby
+    plan: free
+    buildCommand: "./bin/render-build.sh"
+    # preDeployCommand: "bundle exec rails db:migrate" # preDeployCommand only available on paid instance types
+    startCommand: "bundle exec rails server"
+    envVars:
+      - key: postgres://ecomm_l52b_user:Nj5qvctlzDH0A0Z6MOXgjzX7zNEoZr33@dpg-co3a9tg21fec738u138g-a/ecomm_l52b
+        fromDatabase:
+          name: mysite
+          property: connectionString
+      - key: RAILS_MASTER_KEY
+        sync: false
+      - key: WEB_CONCURRENCY
+        value: 2 # sensible default
