@@ -2,9 +2,6 @@
 # Exit on error
 set -o errexit
 
-# Install dependencies
-bundle install
-
 # Precompile assets
 bundle exec rails assets:precompile
 
