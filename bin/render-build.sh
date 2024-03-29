@@ -1,11 +1,18 @@
 #!/usr/bin/env bash
-# exit on error
+# Exit on error
 set -o errexit
 
+# Install dependencies
 bundle install
+
+# Precompile assets
 bundle exec rails assets:precompile
+
+# Clean up old assets
 bundle exec rails assets:clean
 
-./bin/render-build.sh
-./bin/rails db:migrate
-./bin/rails server
+# Run database migrations
+bundle exec rails db:migrate
+
+# Start Rails server
+bundle exec rails server
