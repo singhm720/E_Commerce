@@ -46,7 +46,7 @@
   .user-profile img {
     max-width: 30px; /* Set maximum width for the user profile image */
     border-radius: 50%; /* Make the image round */
-    margin-right: 50px; /* Adjust spacing */
+    margin-right: 10px; /* Adjust spacing */
   }
 
   .user-profile-dropdown {
@@ -104,9 +104,8 @@
   </li>
       <li class="nav-item">
         <div class="user-profile" onclick="toggleUserProfileDropdown()">
-          <%= image_tag("user_profile_image.jpg", alt: "User Profile Image") %>
+          <%= image_tag("user_profile_image.jpg", alt: "User Profile Image") %><span><%= current_user.name%></span>
           <ul class="user-profile-dropdown" id="userProfileDropdown">
-            <div class="nav-item"><%= link_to 'Watch List', new_product_path %></div>
             <div class="nav-item"><%= link_to 'Upload Product', new_product_path %></div>
             <div class="nav-item"><%= link_to 'Your Order', show_orders_purchase_records_path %></div>
             <div class="nav-item">

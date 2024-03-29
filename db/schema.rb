@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_03_22_105557) do
+ActiveRecord::Schema[7.1].define(version: 2024_03_26_122945) do
   create_table "active_storage_attachments", force: :cascade do |t|
     t.string "name", null: false
     t.string "record_type", null: false
@@ -58,6 +58,8 @@ ActiveRecord::Schema[7.1].define(version: 2024_03_22_105557) do
     t.text "title_description"
     t.decimal "title_price"
     t.string "image"
+    t.integer "user_id"
+    t.index ["user_id"], name: "index_products_on_user_id"
   end
 
   create_table "purchase_records", force: :cascade do |t|
@@ -71,6 +73,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_03_22_105557) do
     t.datetime "updated_at", null: false
     t.integer "product_id", null: false
     t.integer "user_id", null: false
+    t.string "order_id", null: false
     t.index ["product_id"], name: "index_purchase_records_on_product_id"
     t.index ["user_id"], name: "index_purchase_records_on_user_id"
   end
@@ -91,6 +94,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_03_22_105557) do
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
+  add_foreign_key "products", "users"
   add_foreign_key "purchase_records", "products"
   add_foreign_key "purchase_records", "users"
 end
