@@ -69,9 +69,25 @@
   .user-profile-dropdown a:hover {
     background-color: #f1f1f1;
   }
+
+  .important-notice {
+    color: red;
+    animation: marqueeEffect 20s linear infinite;
+  }
+  @keyframes marqueeEffect {
+    0% {
+      transform: translateX(100%);
+    }
+    100% {
+      transform: translateX(-100%);
+    }
+  }
   </style>
   </head>
 <body>
+<p class="important-notice">
+  The Website is for testing purposes only. Please do not make any payments.
+</p>
 <div class="container">
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
   <%= link_to 'ECommerce', root_path, class: "navbar-brand" %>
