@@ -81,8 +81,4 @@ production:
   <<: *default
   adapter: postgresql
   encoding: unicode
-  database: <%= ENV['POSTGRESQL_ADDON_DB_NAME'] %>
-  username: <%= ENV['POSTGRESQL_ADDON_USER'] %>
-  password: <%= ENV['POSTGRESQL_ADDON_PASSWORD'] %>
-  host: <%= ENV['POSTGRESQL_ADDON_HOST'] %>
-  port: <%= ENV['POSTGRESQL_ADDON_PORT'] %>
+  url: <%= ENV ['postgres://ecomm_l52b_3bq7_user:rOeNvWVRuoz5w7RMyMmwSD2dLiNelUHh@dpg-co58bu21hbls73ce3n80-a/ecomm_l52b_3bq7'] %>
