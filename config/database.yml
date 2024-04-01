@@ -81,4 +81,5 @@ production:
   <<: *default
   adapter: postgresql
   encoding: unicode
-  url: <%= ENV ['postgres://ecomm_l52b_3bq7_user:rOeNvWVRuoz5w7RMyMmwSD2dLiNelUHh@dpg-co58bu21hbls73ce3n80-a/ecomm_l52b_3bq7'] %>
+  url: <%= ENV['DATABASE_URL'] || 'postgres://ecomm_l52b_3bq7_user:rOeNvWVRuoz5w7RMyMmwSD2dLiNelUHh@dpg-co58bu21hbls73ce3n80-a/ecomm_l52b_3bq7' %>
+
