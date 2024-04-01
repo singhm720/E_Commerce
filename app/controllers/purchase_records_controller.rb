@@ -13,7 +13,7 @@ class PurchaseRecordsController < ApplicationController
     order_id = Time.now.strftime("%Y%m%d%H%M%S") + SecureRandom.hex(4)
     @user = current_user
 
-    if session[:cart].present?
+    if params[:from_cart] == 'true' && session[:cart].present?
       session[:cart].each do |product_id|
         product = Product.find(product_id)
         purchase_record = @user.purchase_records.build(

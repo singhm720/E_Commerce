@@ -20,7 +20,8 @@
         <p>Subtotal: ₹<%= @subtotal %>
           </p><%= @qr_code_url.html_safe %>
         <div class="form-group">
-          <%= form_with(model: @purchase_record, url: purchase_records_path, local: true) do |form| %>
+          <%= form_with(model: @purchase_record, url: purchase_records_path(from_cart: 'true'),
+            local: true) do |form| %>
             <div class="field">
               <%= form.label :transaction_id%> ID:-
               <%= form.text_field :transaction_id, class: 'form-control'%>
