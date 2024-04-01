@@ -79,6 +79,10 @@ test:
 #
 production:
   <<: *default
-  database: e_commerce_web_production
-  username: e_commerce_web
-  password: <%= ENV["E_COMMERCE_WEB_DATABASE_PASSWORD"] %>
+  adapter: postgresql
+  encoding: unicode
+  database: <%= ENV['POSTGRESQL_ADDON_DB_NAME'] %>
+  username: <%= ENV['POSTGRESQL_ADDON_USER'] %>
+  password: <%= ENV['POSTGRESQL_ADDON_PASSWORD'] %>
+  host: <%= ENV['POSTGRESQL_ADDON_HOST'] %>
+  port: <%= ENV['POSTGRESQL_ADDON_PORT'] %>
