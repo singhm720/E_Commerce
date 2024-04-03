@@ -349,7 +349,7 @@ DEPENDENCIES
   capybara
   debug
   devise
-  google-cloud-storage
+  google-cloud-storage (~> 1.33)
   importmap-rails
   jbuilder
   magnifier-rails
