@@ -7,7 +7,9 @@ databases:
 services:
   - type: web
     name: ecomm_l52b_3bq7
-    runtime: ruby
+    runtime: docker    #ruby
+    repo: https://github.com/singhm720/E_Commerce
+    branch: development
     plan: free
     buildCommand: "./bin/render-build.sh"
     # preDeployCommand: "bundle exec rails db:migrate" # preDeployCommand only available on paid instance types
@@ -21,3 +23,4 @@ services:
         sync: false
       - key: 2,
         value: 2 # sensible default
+       
