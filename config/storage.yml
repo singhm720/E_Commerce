@@ -3,6 +3,11 @@ test:
   root: <%= Rails.root.join("tmp/storage") %>
 
 local:
+  # service: GCS
+  # project: steadfast-tesla-418513
+  # credentials: "config/gcs_keyfile.json"
+  # bucket: e_comm_bucket
+
   service: Disk
   root: <%= Rails.root.join("storage") %>
 

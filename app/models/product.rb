@@ -1,3 +1,4 @@
+require 'google/cloud/storage'
 class Product < ApplicationRecord
     has_one_attached :image
     after_create :upload_image_to_gcs
