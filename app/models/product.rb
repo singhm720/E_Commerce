@@ -10,9 +10,9 @@ class Product < ApplicationRecord
 
     private
     def upload_image_to_gcs
-        if image.attached?
-          self.image = image.service_url
+        # if image.attached? && image.blob.present?
+        #   self.image = Rails.application.routes.url_helpers.url_for(image)
           save
-        end
+        # end
     end
 end

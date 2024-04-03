@@ -30,6 +30,8 @@ gem "jbuilder"
 gem "rqrcode"
 gem 'magnifier-rails'
 gem 'devise'
+gem 'google-cloud-storage'
+
 # Use Redis adapter to run Action Cable in production
 # gem "redis", ">= 4.0.1"
 
