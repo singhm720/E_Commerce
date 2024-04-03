@@ -345,6 +345,7 @@ DEPENDENCIES
   awesome_print
   bootsnap
   bootstrap-sass
+  bundler (~> 2.5.4)
   byebug
   capybara
   debug
@@ -368,4 +369,4 @@ RUBY VERSION
    ruby 3.0.0p0
 
 BUNDLED WITH
-   2.5.4
+   2.5.7
