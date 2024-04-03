@@ -2,7 +2,7 @@ test:
   service: Disk
   root: <%= Rails.root.join("tmp/storage") %>
 
-# local:
+local:
   # service: GCS
   # project: steadfast-tesla-418513
   # credentials: "config/gcs_keyfile.json"
@@ -20,7 +20,7 @@ test:
 #   bucket: your_own_bucket-<%= Rails.env %>
 
 # Remember not to checkin your GCS keyfile to a repository
-local:
+google:
   service: GCS
   project: steadfast-tesla-418513
   credentials: "config/gcs_keyfile.json"
