@@ -4,9 +4,9 @@
       <% @products.each do |product| %>
         <div class="col">
           <div class="card h-100">
-            <% if product.image.present? %>
-              <%= image_tag product.image, class: 'card-img-top', alt: '...' %>
-            <% end %>
+          <% if product.image.present? %>
+          <img src="<%= product.image.url %>" class="card-img-top" alt="...">
+        <% end %>
             <div class="card-body">
               <%= link_to product.title_name, product_path(product), class: 'card-title' %>
               <p class="card-text"><%= product.title_description %></p>

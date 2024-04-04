@@ -1,7 +1,12 @@
 require 'google/cloud/storage'
 class Product < ApplicationRecord
-    has_one_attached :image
-    after_create :upload_image_to_gcs
+
+  has_attached_file :image,
+    styles: { medium: "300x300>", thumb: "100x100>" },
+    default_url: "/images/:style/missing.png"
+    validates_attachment_content_type :image, content_type: /\Aimage\/.*\z/
+  # attr_accessor :image_file_name
+  after_create :upload_image_to_gcs
    
     
     validates :title_name, presence: true, length: { maximum: 255 }

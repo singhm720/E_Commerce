@@ -32,7 +32,8 @@ gem 'magnifier-rails'
 gem 'devise'
 gem 'google-cloud-storage', '~> 1.33'
 gem 'bundler', '~> 2.5.4'
-
+gem "paperclip", "~> 6.0.0"
+gem 'uri'
 # Use Redis adapter to run Action Cable in production
 # gem "redis", ">= 4.0.1"
 
