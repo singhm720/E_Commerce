@@ -1,24 +1,14 @@
 require 'google/cloud/storage'
 class Product < ApplicationRecord
-
+  attr_accessor :image
   has_attached_file :image,
     styles: { medium: "300x300>", thumb: "100x100>" },
     default_url: "/images/:style/missing.png"
     validates_attachment_content_type :image, content_type: /\Aimage\/.*\z/
-  # attr_accessor :image_file_name
-  after_create :upload_image_to_gcs
-   
+
     
     validates :title_name, presence: true, length: { maximum: 255 }
     validates :title_description, presence: true
     validates :title_price, presence: true, numericality: { greater_than_or_equal_to: 0 }
     validates :image, presence: true
-
-    private
-    def upload_image_to_gcs
-        # if image.attached? && image.blob.present?
-        #   self.image = Rails.application.routes.url_helpers.url_for(image)
-          save
-        # end
-    end
 end
