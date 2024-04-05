@@ -3,11 +3,6 @@ test:
   root: <%= Rails.root.join("tmp/storage") %>
 
 local:
-  # service: GCS
-  # project: steadfast-tesla-418513
-  # credentials: "config/gcs_keyfile.json"
-  # bucket: e_comm_bucket
-
   service: Disk
   root: <%= Rails.root.join("storage") %>
 
@@ -20,11 +15,9 @@ local:
 #   bucket: your_own_bucket-<%= Rails.env %>
 
 # Remember not to checkin your GCS keyfile to a repository
-google:
-  service: GCS
-  project: steadfast-tesla-418513
-  credentials: "config/gcs_keyfile.json"
-  bucket: e_comm_bucket
+production:
+  service: Disk
+  root: <%= Rails.root.join("storage") %>
 
 # Use bin/rails credentials:edit to set the Azure Storage secret (as azure_storage:storage_access_key)
 # microsoft:
