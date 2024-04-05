@@ -1,0 +1,2 @@
+module BuyNowHelper
+end

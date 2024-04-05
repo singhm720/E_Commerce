@@ -22,9 +22,10 @@
           <tr>
             <td><%= record.order_id %></td>
             <td>
-                <% if record.product.image.present? %>
-                <%= image_tag record.product.image, class: 'card-img-top', alt: '...' %>
-                <% end %>
+              <% if record.product.image.present? %>
+                <!-- Adjust width and height as needed -->
+                <img src="<%= record.product.image.url %>" width="100" height="100" class="card-img-top" alt="...">
+              <% end %>
             </td>
             <td><%= record.product.title_name %></td>
             <td><%= record.product.title_description %></td>

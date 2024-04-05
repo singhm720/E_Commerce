@@ -50,12 +50,7 @@ class CartsController < ApplicationController
   end
   
   
-  def buy_now(cart_items = nil)
-    @product = Product.find(params[:product_id])
-    items = cart_items.nil? ? [@product] : cart_items.map { |item| item[:product] }
-    @subtotal = items.sum { |item| item.title_price }
-    @qr_code_url = generate_qr_code_url(@product, @subtotal)
-  end
+  
 
   def remove_item_from_cart
     product_id = params[:product_id].to_i

@@ -51,7 +51,7 @@ class PurchaseRecordsController < ApplicationController
     end
 
     if @purchase_record.save
-      redirect_to @purchase_record, notice: "Product purchased successfully."
+      redirect_to show_orders_purchase_records_path
     else
       redirect_to @purchase_record, notice: "Fatt gaya BC."
     end
