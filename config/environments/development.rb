@@ -78,14 +78,7 @@ Rails.application.configure do
 
   # Raises error for missing translations.
   # config.i18n.raise_on_missing_translations = true
-  
- # Paperclip configurations for development environment
- config.paperclip_defaults = {
-  storage: :filesystem,
-  path: ":rails_root/public/system/:class/:attachment/:id_partition/:style/:filename",
-  url: "/system/:class/:attachment/:id_partition/:style/:filename"
-}
-  
+
   # Annotate rendered view with file names.
   # config.action_view.annotate_rendered_view_with_filenames = true
 
