@@ -30,7 +30,7 @@ gem "jbuilder"
 gem "rqrcode"
 gem 'magnifier-rails'
 gem 'devise'
-gem 'google-cloud-storage', '~> 1.33'
+gem 'google-cloud-storage'
 gem 'bundler', '~> 2.5.4'
 gem "paperclip", "~> 6.0.0"
 gem 'uri'
