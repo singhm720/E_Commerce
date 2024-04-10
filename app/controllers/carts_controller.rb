@@ -16,7 +16,9 @@ class CartsController < ApplicationController
       session[:cart] << @product.id
       flash[:notice] = "Product successfully added to cart."
     end
-    redirect_to :root
+    respond_to do |format|
+      format.js { render js: "window.location.replace('#{root_path}');" }
+    end 
   end
 
   def cart_items
@@ -25,6 +27,7 @@ class CartsController < ApplicationController
       @cart_items = @products.map { |product| { product: product, order_count: session[:cart].count(product.id) } }
       @subtotal = @cart_items.sum { |item| item[:product].title_price * item[:order_count] }
       @qr_code_url = generate_qr_code_url(@products, @subtotal)
+      session[:subtotal] = @subtotal
     else
       @products = []
       @cart_items = []
@@ -75,20 +78,6 @@ class CartsController < ApplicationController
     qr_code = RQRCode::QRCode.new(payment_data)
     qr_code.as_svg(module_size: scale).html_safe
   end
-  
-
-
-  # def generate_qr_code_url(cart_items, scale: 8)
-  #   recipient = '7208791386k@ybl'
-  #   payment_data = ""
-  #   cart_items.each do |item|
-  #     product_price = item.title_price
-  #     payment_data += "upi://pay?pa=#{recipient}&pn=Recipient Name&am=#{product_price}&cu=INR\n"
-  #   end
-  
-  #   qr_code = RQRCode::QRCode.new(payment_data)
-  #   qr_code.as_svg(module_size: scale).html_safe
-  # end
   
 end
   

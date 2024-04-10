@@ -12,11 +12,10 @@ class PurchaseRecordsController < ApplicationController
   def create
     order_id = Time.now.strftime("%Y%m%d%H%M%S") + SecureRandom.hex(4)
     @user = current_user
-
     if params[:from_cart] == 'true' && session[:cart].present?
       session[:cart].each do |product_id|
         product = Product.find(product_id)
-        purchase_record = @user.purchase_records.build(
+        @purchase_record = @user.purchase_records.build(
           product: product,
           user_email: @user.email,
           user_name: @user.name,
@@ -27,7 +26,7 @@ class PurchaseRecordsController < ApplicationController
           total_cart_price: session[:subtotal]
         )
         
-        unless purchase_record.save
+        unless @purchase_record.save
           flash[:error] = "Failed to create purchase record for product #{product_id}."
           redirect_to root_path and return
         end
@@ -53,7 +52,7 @@ class PurchaseRecordsController < ApplicationController
     if @purchase_record.save
       redirect_to show_orders_purchase_records_path
     else
-      redirect_to @purchase_record, notice: "Fatt gaya BC."
+      puts "Fatt gaya BC."
     end
   end
 end

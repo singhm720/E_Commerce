@@ -18,9 +18,15 @@
         </tr>
       </thead>
       <tbody>
+        <% prev_order_id = nil %>
+        <% total_cart_price = 0 %>
         <% @purchase_records.reverse_each do |record| %>
           <tr>
-            <td><%= record.order_id %></td>
+            <% if prev_order_id == record.order_id %>
+              <td></td>
+            <% else %>
+              <td><%= record.order_id %></td>
+            <% end %>
             <td>
               <% if record.product.image.present? %>
                 <!-- Adjust width and height as needed -->
@@ -30,8 +36,14 @@
             <td><%= record.product.title_name %></td>
             <td><%= record.product.title_description %></td>
             <td>₹<%= record.product.title_price %></td>
-            <td>₹<%= record.total_cart_price %></td>    
+            <% if prev_order_id != record.order_id %>
+              <td>₹<%= record.total_cart_price %></td>
+            <% else %>
+              <td></td>
+            <% end %>
           </tr>
+          <% prev_order_id = record.order_id %>
+          <% total_cart_price += record.total_cart_price %>
         <% end %>
       </tbody>
     </table>

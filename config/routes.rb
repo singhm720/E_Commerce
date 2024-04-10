@@ -13,7 +13,7 @@ Rails.application.routes.draw do
     unlocks: 'users/unlocks'
   }
   get '/show_orders', to: 'purchase_records#show_orders', as: 'show_orders_purchase_records'
-  get '/carts/:product_id/add_to_cart', to: 'carts#add_to_cart', as: 'add_to_cart'
+  post '/carts/:product_id/add_to_cart', to: 'carts#add_to_cart', as: 'add_to_cart'
   get '/buy_now/:product_id', to: 'buy_now#buy_now', as: 'buy_now'
   get '/cart_items', to: 'carts#cart_items', as: 'cart_items'
 
