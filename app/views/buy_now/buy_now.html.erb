@@ -37,21 +37,3 @@
     </div>
   </div>
 </div>
-<script>
-    document.addEventListener("DOMContentLoaded", function() {
-        var options = {
-            fillContainer: true,
-            offset: { vertical: 0, horizontal: 5 }
-        };
-        
-        var imgContainer = document.getElementById("img-container");
-
-        imgContainer.addEventListener("mouseenter", function() {
-            new ImageZoom(imgContainer, options);
-        });
-
-        imgContainer.addEventListener("mouseleave", function() {
-            // Remove the ImageZoom instance or do any cleanup if necessary
-        });
-    });
-</script>

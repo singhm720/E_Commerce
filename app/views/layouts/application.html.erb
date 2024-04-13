@@ -7,77 +7,37 @@
   <%= csp_meta_tag %>
   <%= javascript_importmap_tags %>
   <!-- Bootstrap CSS -->
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 
   <style>
-  /* Apply styles to all navigation items */
   .nav-item {
-    margin-right: 10px; /* Adjust spacing between navigation items */
+    margin-right: 10px;
   }
   
-  /* Style the links */
   .nav-link {
-    color: #333; /* Change link color */
-    text-decoration: none; /* Remove underline */
-    font-weight: bold; /* Make text bold */
-  }
-  
-  /* Style the buttons */
-  .btn {
-    border-radius: 20px; /* Round corners */
-    padding: 5px 10px; /* Adjust padding */
-  }
-  
-  /* Style the cart icon */
-  .nav-item img {
-    max-width: 30px; /* Set maximum width for the cart icon */
-  }
-
-  /* Style the user profile image */
-  .user-profile {
-    cursor: pointer;
-    position: relative;
-    display: inline-block;
-  }
-
-  .user-profile img {
-    max-width: 30px; /* Set maximum width for the user profile image */
-    border-radius: 50%; /* Make the image round */
-    margin-right: 10px; /* Adjust spacing */
-  }
-
-  .user-profile-dropdown {
-    display: none;
-    position: absolute;
-    background-color: #f9f9f9;
-    min-width: 200px;
-    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
-    z-index: 1;
-    margin-right: 50px; /* Adjust spacing */
-  }
-
-  .user-profile-dropdown a {
-    color: black;
-    padding: 12px 16px;
+    color: #333;
     text-decoration: none;
-    display: block;
+    font-weight: bold;
   }
-
-  .user-profile-dropdown a:hover {
-    background-color: #f1f1f1;
+  .btn {
+    border-radius: 20px;
+    padding: 5px 10px;
   }
-
+  .nav-item img {
+    max-width: 30px;
+  }
   .important-notice {
     color: red;
-    animation: marqueeEffect 20s linear infinite;
   }
   </style>
 </head>
 <body>
 <div class="container">
-  <p class="important-notice">
+  <marquee class="important-notice">
     The Website is for testing purposes only. Please do not make any payments.
-  </p>
+  </marquee>
   <nav class="navbar navbar-expand-lg navbar-light bg-light">
     <%= link_to 'ECommerce', root_path, class: "navbar-brand" %>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
@@ -86,44 +46,46 @@
     </button>
     <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
       <ul class="navbar-nav">
-        <% if user_signed_in? %>
-        <li class="nav-item">
-        <%= form_tag(root_path, method: :get, class: "form-inline my-2 my-lg-0") do %>
-          <div class="row align-items-center">
-            <div class="col-md-8 position-relative mb-2 mb-md-0">
-              <%= text_field_tag :query, params[:query], id: "searchInput", placeholder: "Search Products", class: "form-control" %>
-            </div>
-            <div class="col-md-4">
-              <%= submit_tag "Search", class: "btn btn-outline-success my-2 my-sm-0 w-100" %> <!-- Added w-100 class for full width -->
-            </div>
-          </div>
-        <% end %>                  
-      </li>
+          <% if user_signed_in? %>
           <li class="nav-item">
-            <%= link_to cart_items_path, class: 'nav-link btn btn-outline-primary' do %>
+          <%= form_tag(root_path, method: :get, class: " nav-link navbar-collapse justify-content-center flex-lg-1 order-2 order-lg-1 collapse", id:"navbar_search") do %>
+            <div class="row align-items-center", style = "margin-right:12px">
+              <div class="col-lg-10">
+                <div class="navbar-search flex-fill position-relative mt-2 mt-lg-0">
+                  <div class="form-control-feedback form-control-feedback-start flex-grow-1" data-color-theme="dark">
+                    <%= text_field_tag :query, params[:query], id: "searchInput", placeholder: "Search Products", class: "form-control bg-transparent rounded-pill form-control-lg", style: "width: 534px;" %>
+                  </div>
+                </div>
+              </div>
+            </div>  
+          <div class="col-lg-2">
+              <%= submit_tag "Search", class: "btn btn-outline-success my-2 my-sm-0 w-100", style:"margin-right: 50px"%>
+          </div>
+      <% end %>                
+      </li>
+          <li class="nav-item" style="margin-top: 10px;">
+            <%= link_to cart_items_path, class: 'nav-link' do %>
               <%= image_tag("cart.svg", alt: "Icon", class: "img-fluid") %>
-              <span class="d-none d-sm-inline-block ms-2"><%= session[:cart_count] || 0 %></span>
+              <span><%= session[:cart_count] || 0 %></span>
             <% end %>
           </li>
-          <li class="nav-item">
-          <div class="user-profile" onclick="toggleUserProfileDropdown()">
+          <li class="nav-item dropdown show" style="margin-top: 10px;">
+            <div class="user-profile btn btn-secondary dropdown-toggle" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
               <%= image_tag("user_profile_image.jpg", alt: "User Profile Image", class: "img-fluid rounded-circle") %>
-              <span class="d-none d-sm-inline-block me-2"><%= current_user.name %></span>
-              <ul class="user-profile-dropdown" id="userProfileDropdown">
-              <li><%= link_to 'Upload Product', new_product_path %></li>
-              <li><%= link_to 'Your Order', show_orders_purchase_records_path %></li>
-              <li>
-                <%= form_tag(destroy_user_session_path, method: :delete) do %>
-                  <%= button_tag(type: 'submit', class: 'btn btn-link', data: { confirm: 'Are you sure?' }) do %>
-                    Sign Out
-                  <% end %>
+              <span><%= current_user.name %></span>
+            </div>
+            <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+              <%= link_to 'Upload Product', new_product_path, class: "dropdown-item" %>
+              <%= link_to 'Your Order', show_orders_purchase_records_path, class:"dropdown-item"%>
+              <%= form_tag(destroy_user_session_path, method: :delete) do %>
+                <%= button_tag(type: 'submit', class: 'btn btn-link', data: { confirm: 'Are you sure?' }) do %>
+                  <div class="dropdown-item"style="padding-left: 8px;">Sign Out</div>
                 <% end %>
-              </li>
-            </ul>
+              <% end %>
             </div>
           </li>
         <% else %>
-          <li class="nav-item">
+          <li class="nav-item flex-fill">
             <%= link_to 'Sign In', new_user_session_path, class: "nav-link btn btn-outline-primary" %>
           </li>
         <% end %>
@@ -131,26 +93,6 @@
     </div>
   </nav>
 </div>
-
 <%= yield %>
-
-<!-- Bootstrap JavaScript -->
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-
-<script type="text/javascript">
-  // JavaScript to toggle user profile dropdown
-  function toggleUserProfileDropdown() {
-    var dropdown = document.getElementById("userProfileDropdown");
-    if (dropdown.style.display === "block") {
-      dropdown.style.display = "none";
-    } else {
-      dropdown.style.display = "block";
-    }
-  }
-</script>
-
 </body>
 </html>
-
- 
-

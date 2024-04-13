@@ -16,9 +16,7 @@ class CartsController < ApplicationController
       session[:cart] << @product.id
       flash[:notice] = "Product successfully added to cart."
     end
-    respond_to do |format|
-      format.js { render js: "window.location.replace('#{root_path}');" }
-    end 
+    redirect_to root_path
   end
 
   def cart_items
@@ -49,7 +47,7 @@ class CartsController < ApplicationController
     @products = Product.where(id: session[:cart])
     @cart_items = @products.map { |product| { product: product, order_count: session[:cart].count(product.id) } }
     @subtotal = @cart_items.sum { |item| item[:product].title_price * item[:order_count] }
-    
+    redirect_to cart_items_path
   end
   
   

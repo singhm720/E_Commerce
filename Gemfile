@@ -28,7 +28,6 @@ gem 'awesome_print'
 # Build JSON APIs with ease [https://github.com/rails/jbuilder]
 gem "jbuilder"
 gem "rqrcode"
-gem 'magnifier-rails'
 gem 'devise'
 gem 'google-cloud-storage'
 gem 'bundler', '~> 2.5.4'
