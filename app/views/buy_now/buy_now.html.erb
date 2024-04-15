@@ -5,7 +5,8 @@
         <div class="col">
           <div class="card">
           <% if @product.image.present? %>
-          <img src="<%= @product.image.url %>" class="card-img-top" alt="...">
+          <% decoded_url = URI.decode_www_form_component(@product.image.url) %>
+            <%= image_tag decoded_url, class: "card-img-top", alt: "..." %>
           <% end %>   
             <div class="card-body">
               <p class="card-text"><%= @product.title_name %> </p>

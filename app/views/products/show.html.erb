@@ -1,17 +1,18 @@
 <div class="container">
   <div class="row row-cols-1 row-cols-md-3 g-4">
-      <div class="col">
-        <div class="card">
-          <% if @product.image.present? %>
-            <img src="<%= @product.image.url %>" class="card-img-top" alt="...">
-          <% end %>
-          <div class="card-body">
-            <p class="card-text"><%= @product.title_name %>
-            <p class="card-text"><%= @product.title_description %></p>
-            <h5 class="card-text">₹<%= @product.title_price %></h5>
-            <%= link_to 'Buy Now', buy_now_path(product_id: @product.id), class: 'btn btn-success' %>
-          </div>
+    <div class="col">
+      <div class="card">
+        <% if @product.image.present? %>
+        <% decoded_url = URI.decode_www_form_component(@product.image.url) %>
+          <%= image_tag decoded_url, class: "card-img-top", alt: "..." %>
+        <% end %>
+        <div class="card-body">
+          <p class="card-text"><%= @product.title_name %></p>
+          <p class="card-text"><%= @product.title_description %></p>
+          <h5 class="card-text">₹<%= @product.title_price %></h5>
+          <%= link_to 'Buy Now', buy_now_path(product_id: @product.id), class: 'btn btn-success' %>
         </div>
       </div>
+    </div>
   </div>
 </div>
